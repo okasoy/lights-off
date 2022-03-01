@@ -38,9 +38,8 @@ public class Field {
                 this.tiles[i][j] = new Tile();
             }
         }
-        if(this.typeOfLevel.equals("R") || this.typeOfLevel.equals("r")) generateRandomly();
-        if(this.typeOfLevel.equals("S") || this.typeOfLevel.equals("s")) generateLevel(this.level);
-        printField();
+        if(this.typeOfLevel.equals("R")) generateRandomly();
+        if(this.typeOfLevel.equals("S")) generateLevel(this.level);
     }
 
     private void generateRandomly(){
@@ -59,17 +58,9 @@ public class Field {
 
     private void generateLevel(int level){
         Levels levelToPlay = new Levels(this);
-        levelToPlay.level(level);
-    }
-
-    private void printField(){
-        for(int i = 0; i < this.rowCount; i++){
-            for(int j = 0; j < this.columnCount; j++){
-                if(this.tiles[i][j].getTileState() == TileState.OFF) System.out.print("0  ");
-                else System.out.print("1  ");
-            }
-            System.out.println();
-        }
+        if(level > 0 && level < 11) levelToPlay.level(level);
+        else if(level > 10) System.out.println("Congratulations you won!");
+        else System.out.println("Invalid level!");
     }
 
     public GameState getGameState(){
@@ -120,7 +111,6 @@ public class Field {
         if(row < this.rowCount) this.tiles[row][column-1].changeTileState();
         if(column-2 >= 0) this.tiles[row-1][column-2].changeTileState();
         if(column < this.columnCount) this.tiles[row-1][column].changeTileState();
-        printField();
         if(isSolved()) this.gameState = GameState.SOLVED;
     }
 }
