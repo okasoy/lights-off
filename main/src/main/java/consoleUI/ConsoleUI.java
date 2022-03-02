@@ -30,6 +30,7 @@ public class ConsoleUI {
                 }
                 break;
             }
+
             else if(type.equals("X")) System.exit(0);
             else System.out.println("Please enter R or S!");
         }
