@@ -30,7 +30,6 @@ public class ConsoleUI {
                 }
                 break;
             }
-
             else if(type.equals("X")) System.exit(0);
             else System.out.println("Please enter R or S!");
         }
@@ -50,13 +49,14 @@ public class ConsoleUI {
         while(field.getGameState() != GameState.SOLVED) {
             printField();
             Scanner scanner = new Scanner(System.in);
-            Scanner scanner1 = new Scanner(System.in);
-            String exit = scanner.nextLine().toUpperCase();
-            if(exit.equals("X")) System.exit(0);
-            int row = scanner.nextInt();
-            int column = scanner1.nextInt();
-            field.turnOff(row, column);
-            if(field.isSolved()) printField();
+            String line = scanner.nextLine().toUpperCase();
+            if(line.equals("X")) System.exit(0);
+            else{
+                int row = line.charAt(0) - '1';
+                int column = line.charAt(2) - '1';
+                field.turnOff(row, column);
+                if (field.isSolved()) printField();
+            }
         }
     }
 }
