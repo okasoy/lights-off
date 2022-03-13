@@ -54,7 +54,7 @@ public class ConsoleUI {
             else{
                 int row = line.charAt(0) - '1';
                 int column = line.charAt(2) - '1';
-                field.turnOff(row, column);
+                if(!field.turnOff(row, column)) System.out.println("Wrong row or column!");
                 if (field.isSolved()) printField();
             }
         }
