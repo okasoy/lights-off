@@ -101,16 +101,16 @@ public class Field {
         return lightedTiles == 0;
     }
 
-    public void turnOff(int row, int column){
-        if(row > this.rowCount || row-1 < 0 || column > this.columnCount || column-1 < 0){
-            System.out.println("Wrong row or column!");
-            return;
+    public boolean turnOff(int row, int column){
+        if(row >= this.rowCount || row < 0 || column >= this.columnCount || column < 0){
+            return false;
         }
-        this.tiles[row-1][column-1].changeTileState();
-        if(row-2 >= 0) this.tiles[row-2][column-1].changeTileState();
-        if(row < this.rowCount) this.tiles[row][column-1].changeTileState();
-        if(column-2 >= 0) this.tiles[row-1][column-2].changeTileState();
-        if(column < this.columnCount) this.tiles[row-1][column].changeTileState();
+        this.tiles[row][column].changeTileState();
+        if(row-1 >= 0) this.tiles[row-1][column].changeTileState();
+        if(row+1 < this.rowCount) this.tiles[row+1][column].changeTileState();
+        if(column-1 >= 0) this.tiles[row][column-1].changeTileState();
+        if(column+1 < this.columnCount) this.tiles[row][column+1].changeTileState();
         if(isSolved()) this.gameState = GameState.SOLVED;
+        return true;
     }
 }
