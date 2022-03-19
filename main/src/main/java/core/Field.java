@@ -8,38 +8,35 @@ public class Field {
     private final int columnCount;
     private int lightsCount;
     private final Tile[][] tiles;
-    private final String typeOfLevel;
-    private int level;
+    private TypeOfLevel typeOfLevel;
+    private int level = 0;
+    private int moveCount = 0;
 
-    public Field(int rowCount, int columnCount, String typeOfLevel){
+    public Field(int rowCount, int columnCount){
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.lightsCount = 0;
         this.gameState = GameState.PLAYING;
         this.tiles = new Tile[rowCount][columnCount];
-        this.typeOfLevel = typeOfLevel;
-        generate();
     }
 
-    public Field(int rowCount, int columnCount, String typeOfLevel, int level){
+    public Field(int rowCount, int columnCount, int level){
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.lightsCount = 0;
         this.gameState = GameState.PLAYING;
         this.tiles = new Tile[rowCount][columnCount];
-        this.typeOfLevel = typeOfLevel;
         this.level = level;
-        generate();
     }
 
-    private void generate(){
+    public void generate(){
         for(int i = 0; i < this.rowCount; i++){
             for(int j = 0; j < this.columnCount; j++){
                 this.tiles[i][j] = new Tile();
             }
         }
-        if(this.typeOfLevel.equals("R")) generateRandomly();
-        if(this.typeOfLevel.equals("S")) generateLevel(this.level);
+        if(this.typeOfLevel == TypeOfLevel.RANDOM) generateRandomly();
+        if(this.typeOfLevel == TypeOfLevel.PREPARED) generateLevel(this.level);
     }
 
     private void generateRandomly(){
@@ -59,8 +56,15 @@ public class Field {
     private void generateLevel(int level){
         Levels levelToPlay = new Levels(this);
         if(level > 0 && level < 11) levelToPlay.level(level);
-        else if(level > 10) System.out.println("Congratulations you won!");
-        else System.out.println("Invalid level!");
+    }
+
+    public void setTypeOfLevel(TypeOfLevel typeOfLevel){
+        this.typeOfLevel = typeOfLevel;
+        this.generate();
+    }
+
+    public TypeOfLevel getTypeOfLevel(){
+        return this.typeOfLevel;
     }
 
     public GameState getGameState(){
@@ -83,12 +87,15 @@ public class Field {
         this.lightsCount = lightsCount;
     }
 
-    public int getLevel() {
-        return this.level;
-    }
-
     public Tile getTile(int row, int column) {
         return this.tiles[row][column];
+    }
+
+    public int getScore(){
+        if(this.isSolved() && moveCount > 0 && moveCount < 15) moveCount = (30/moveCount + 20) * 3;
+        else if(this.isSolved() && moveCount >= 15 && moveCount < 30) moveCount = (30/moveCount + 20) * 2;
+        else if(moveCount != 0) moveCount += 20;
+        return moveCount;
     }
 
     public boolean isSolved(){
@@ -111,6 +118,7 @@ public class Field {
         if(column-1 >= 0) this.tiles[row][column-1].changeTileState();
         if(column+1 < this.columnCount) this.tiles[row][column+1].changeTileState();
         if(isSolved()) this.gameState = GameState.SOLVED;
+        this.moveCount++;
         return true;
     }
 }

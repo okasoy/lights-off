@@ -2,6 +2,7 @@ package tests;
 
 import core.Field;
 import core.TileState;
+import core.TypeOfLevel;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,10 +15,10 @@ public class FieldTest {
     public FieldTest() {
         this.rowCount = 5;
         this.columnCount = 5;
-        String random = "R";
-        String level = "S";
-        this.fieldRandom = new Field(this.rowCount, this.columnCount, random);
-        this.fieldLevels = new Field(this.rowCount, this.columnCount, level, 1);
+        this.fieldRandom = new Field(this.rowCount, this.columnCount);
+        this.fieldRandom.setTypeOfLevel(TypeOfLevel.RANDOM);
+        this.fieldLevels = new Field(this.rowCount, this.columnCount, 1);
+        this.fieldLevels.setTypeOfLevel(TypeOfLevel.PREPARED);
     }
 
     @Test
