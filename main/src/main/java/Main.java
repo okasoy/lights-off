@@ -1,5 +1,3 @@
-package core;
-
 import consoleUI.ConsoleUI;
 
 public class Main {

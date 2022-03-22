@@ -30,15 +30,14 @@ public class ConsoleUI {
     private static final String CHOICE = "If you want to play random level enter R.\n" +
                                         "If you want to play prepared levels with increasing difficulty enter P.\n" +
                                         "If you want to stop enter X.";
+    private String yesOrNo;
     private int level = 0;
     private int score = 0;
     private final ScoreService scoreService = new ScoreServiceJDBC();
 
     public void start(){
         printRules();
-        while(true){
-            if(processInputBeginning()) break;
-        }
+        while(processInputBeginning()) System.out.println("Please enter R or P!");
         play();
     }
 
@@ -55,19 +54,17 @@ public class ConsoleUI {
             case "R":
                 this.field = new Field(5, 5);
                 this.field.setTypeOfLevel(TypeOfLevel.RANDOM);
-                return true;
+                return false;
             case "P":
                 level = 1;
                 this.field = new Field(5, 5, level);
                 this.field.setTypeOfLevel(TypeOfLevel.PREPARED);
-                return true;
+                return false;
             case "X":
                 System.exit(0);
             default:
-                System.out.println("Please enter R or P!");
-                break;
+                return true;
         }
-        return false;
     }
 
     private void printField(){
@@ -111,38 +108,35 @@ public class ConsoleUI {
         if (field.getTypeOfLevel() == TypeOfLevel.RANDOM || level == 10) end();
         else {
             printField();
+            System.out.println("Congratulations! You solved the level!");
+            System.out.println();
             level++;
             this.field = new Field(5, 5, level);
             this.field.setTypeOfLevel(TypeOfLevel.PREPARED);
         }
     }
 
-    private void end(){
-        printField();
-        if(field.getGameState() == GameState.SOLVED) System.out.println("Congratulations! You won!");
-        System.out.println("Do you want to continue playing? Y/N");
-        while (true) {
-            if (processInputEnding()) break;
-        }
-        play();
+    private boolean processInputYesOrNo(){
+        yesOrNo = scanner.nextLine().toUpperCase();
+        return !yesOrNo.equals("Y") && !yesOrNo.equals("N");
     }
 
-    private boolean processInputEnding(){
-        String line = scanner.nextLine().toUpperCase();
-        if (line.equals("Y")) {
+    private void end(){
+        printField();
+        if(field.getGameState() == GameState.SOLVED && level != 10) System.out.println("Congratulations! You solved the level!");
+        if(field.getGameState() == GameState.SOLVED && level == 10) System.out.println("Congratulations! You solved all levels!");
+        System.out.println("Do you want to continue playing? Y/N");
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
             System.out.println(CHOICE);
-            while (true) {
-                if (processInputBeginning()) break;
-            }
-            return true;
-        } else if (line.equals("N")) {
+            while(processInputBeginning()) System.out.println("Please enter R or P!");
+            play();
+        }
+        else if (yesOrNo.equals("N")) {
             service();
             System.out.println("Your score is " + scoreService.getScore("lights off", player));
             System.exit(0);
-        } else {
-            System.out.println("Please enter Y or N!");
         }
-        return false;
     }
 
     private void service(){
@@ -154,54 +148,40 @@ public class ConsoleUI {
 
     private void showTopScores() {
         System.out.println("Do you want to see top scores? Y/N");
-        while(true) {
-            String line = scanner.nextLine().toUpperCase();
-            if (line.equals("Y")) {
-                var scores = new ScoreServiceJDBC().getTopScores("lights off");
-                System.out.println("Top scores");
-                System.out.println("---------------------------------------------------------------");
-                for (int i = 0; i < scores.size(); i++) {
-                    var score = scores.get(i);
-                    System.out.printf("%d. %s %d\n", i + 1, score.getPlayer(), score.getPoints());
-                }
-                System.out.println("---------------------------------------------------------------");
-                break;
-            } else if (line.equals("N")) break;
-            else System.out.println("Please enter Y or N!");
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
+            var scores = new ScoreServiceJDBC().getTopScores("lights off");
+            System.out.println("Top scores");
+            System.out.println("---------------------------------------------------------------");
+            for (int i = 0; i < scores.size(); i++) {
+                var score = scores.get(i);
+                System.out.printf("%d. %s %d\n", i + 1, score.getPlayer(), score.getPoints());
+            }
+            System.out.println("---------------------------------------------------------------");
         }
     }
 
     private void addComment(){
         System.out.println("Do you want to add comment? Y/N");
-        while(true){
-            String line = scanner.nextLine().toUpperCase();
-            if(line.equals("Y")) {
-                System.out.println("Enter your comment");
-                String comment = scanner.nextLine();
-                new CommentServiceJDBC().addComment(new Comment("lights off", player, comment, new Date()));
-                break;
-            }
-            else if(line.equals("N")) break;
-            else System.out.println("Please enter Y or N!");
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
+            System.out.println("Enter your comment");
+            String comment = scanner.nextLine();
+            new CommentServiceJDBC().addComment(new Comment("lights off", player, comment, new Date()));
         }
     }
 
     private void addRating(){
         System.out.println("Do you want to add rating? Y/N");
-        while(true){
-            String line = scanner.nextLine().toUpperCase();
-            if(line.equals("Y")) {
-                System.out.println("Enter your rating from 0 to 5");
-                int rating = scanner.nextInt();
-                while(rating < 0 || rating > 5){
-                    System.out.println("Invalid rating! Enter your rating from 0 to 5");
-                    rating = scanner.nextInt();
-                }
-                new RatingServiceJDBC().setRating(new Rating("lights off", player, rating, new Date()));
-                break;
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
+            System.out.println("Enter your rating from 0 to 5");
+            int rating = scanner.nextInt();
+            while(rating < 0 || rating > 5){
+                System.out.println("Invalid rating! Enter your rating from 0 to 5");
+                rating = scanner.nextInt();
             }
-            else if(line.equals("N")) break;
-            else System.out.println("Please enter Y or N!");
+            new RatingServiceJDBC().setRating(new Rating("lights off", player, rating, new Date()));
         }
     }
 

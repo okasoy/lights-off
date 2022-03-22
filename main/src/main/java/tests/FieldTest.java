@@ -22,30 +22,6 @@ public class FieldTest {
     }
 
     @Test
-    public void checkLightsCountInRandomLevel() {
-        int lightsCounter = 0;
-        for(int row = 0; row < this.rowCount; row++){
-            for(int column = 0; column < this.columnCount; column++){
-                if(this.fieldRandom.getTile(row, column).getTileState() == TileState.ON) lightsCounter++;
-            }
-        }
-        assertEquals(this.fieldRandom.getLightsCount(), lightsCounter, "Field was initialized incorrectly - " +
-                "a different amount of mines was counted in the field than amount given in the constructor.");
-    }
-
-    @Test
-    public void checkLightsCountInStaticLevel() {
-        int lightsCounter = 0;
-        for(int row = 0; row < this.rowCount; row++){
-            for(int column = 0; column < this.columnCount; column++){
-                if(this.fieldLevels.getTile(row, column).getTileState() == TileState.ON) lightsCounter++;
-            }
-        }
-        assertEquals(this.fieldLevels.getLightsCount(), lightsCounter, "Field was initialized incorrectly - " +
-                "a different amount of mines was counted in the field than amount given in the constructor.");
-    }
-
-    @Test
     public void checkInvalidRowAndColumnInTurnOff() {
         Field fieldTest = this.fieldRandom;
         this.fieldRandom.turnOff(-1, 35);

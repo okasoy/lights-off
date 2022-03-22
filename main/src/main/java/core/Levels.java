@@ -1,6 +1,7 @@
 package core;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Levels {
     private final Field field;
@@ -28,6 +29,7 @@ public class Levels {
     public void level(int level){
         try{
             File level1 = new File(getPathname(level));
+            checkSize(level1);
             BufferedReader bufferedReader = new BufferedReader(new FileReader(level1));
             char symbol;
             for(int j = 0; j < this.field.getRowCount(); j++){
@@ -41,9 +43,22 @@ public class Levels {
                 bufferedReader.readLine();
             }
         }
-        catch (IOException e){
+        catch (IllegalArgumentException | IOException e){
             e.printStackTrace();
         }
+    }
+
+    private void checkSize(File file){
+        int size = 0;
+        try (Scanner scanner = new Scanner(file)){
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                size += line.length();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(size != this.field.getRowCount()*this.field.getColumnCount()) throw new IllegalArgumentException("Wrong size of field");
     }
 
 }

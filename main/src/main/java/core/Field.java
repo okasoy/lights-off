@@ -29,7 +29,7 @@ public class Field {
         this.level = level;
     }
 
-    public void generate(){
+    private void generate(){
         for(int i = 0; i < this.rowCount; i++){
             for(int j = 0; j < this.columnCount; j++){
                 this.tiles[i][j] = new Tile();
@@ -92,8 +92,8 @@ public class Field {
     }
 
     public int getScore(){
-        if(this.isSolved() && moveCount > 0 && moveCount < 15) moveCount = (30/moveCount + 20) * 3;
-        else if(this.isSolved() && moveCount >= 15 && moveCount < 30) moveCount = (30/moveCount + 20) * 2;
+        if(this.isSolved() && moveCount > 0 && moveCount < 10) moveCount = (30/moveCount + 20) * 3;
+        else if(this.isSolved() && moveCount >= 10 && moveCount < 20) moveCount = (30/moveCount + 20) * 2;
         else if(moveCount != 0) moveCount += 20;
         return moveCount;
     }
