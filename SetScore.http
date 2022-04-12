@@ -1,0 +1,19 @@
+POST http://localhost:8080/api/score
+Content-Type: application/json
+
+{
+  "game": "lightsOff",
+  "player": "kseniya",
+  "points": 343,
+  "playedOn": "2022-04-11T12:40:33"
+}
+###
+POST http://localhost:8080/api/score
+Content-Type: application/json
+
+{
+  "game": "lightsOff",
+  "player": "Nick",
+  "points": 420,
+  "playedOn": "2022-04-08T13:48:12"
+}

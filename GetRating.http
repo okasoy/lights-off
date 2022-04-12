@@ -1,0 +1,6 @@
+GET http://localhost:8080/api/rating/lightsOff
+Accept: application/json
+###
+
+GET http://localhost:8080/api/rating/lightsOff/kseniya
+Accept: application/json
