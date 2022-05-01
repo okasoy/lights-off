@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamestudio</title>
+    <link rel="stylesheet" href="/css/homePage.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+
+</head>
+<body>
+
+<div class="buttons">
+    <table>
+        <tr>
+            <td>
+                <form action="/lightsOffChoice">
+                    <button class="button">Play</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form action="/lightsOffChoice">
+                    <button class="button">Load</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form>
+                    <button class="button" onclick="openRules()" type="button">Rules</button>
+                </form>
+                <div id="rules">
+                    <div class="popup">
+                        <button class="close" title="close" onclick="closeRules()"></button>
+                        <p class="zag">Lights Off - The Rules</p>
+                        <p>● the purpose of the game is to turn off all the lights on the board</p>
+                        <p>● clicking on a bulb switches its lightning state</p>
+                        <p>● clicking on a bulb also switches the state of its North, South, East and West neighbors</p>
+                        <p>● all the prepared levels tend to increase in difficulty</p>
+                        <p>● all the random levels are randomly generated</p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form>
+                    <button class="button" onclick="openScores()" type="button">Score</button>
+                </form>
+                <div id="score">
+                    <div class="popup">
+                        <button class="close" title="close" onclick="closeScores()"></button>
+                        <p class="zag">Lights Off - Top Scores</p>
+                        <table id="clientSideScoreTable" class="display">
+                            <thead>
+                            <tr>
+                                <th data-orderable="false">Player</th>
+                                <th data-orderable="false">Points</th>
+                                <th data-orderable="false">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form action="/lightsOffChoice">
+                    <button class="button">Rating</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form action="/lightsOffChoice">
+                    <button class="button" onclick="openComments()" type="button">Comment</button>
+                </form>
+                <div id="comment">
+                    <div class="popup">
+                        <button class="close" title="close" onclick="closeComments()"></button>
+                        <p class="zag">Lights Off - Comments</p>
+                        <table id="clientSideCommentsTable" class="display">
+                            <thead>
+                            <tr>
+                                <th data-orderable="false">Player</th>
+                                <th data-orderable="false">Comment</th>
+                                <th data-orderable="false">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    var scoresTable;
+    var commentsTable;
+    function openRules(){
+        var a = document.getElementById('rules');
+        a.style.visibility = 'visible';
+        a.style.opacity = '1';
+        a.style.transition = 'all 0.7s ease-out 0s';
+    }
+    function closeRules(){
+        var a = document.getElementById('rules');
+        a.style.visibility = 'hidden';
+        a.style.opacity = '0';
+    }
+    function openScores(){
+        var b = document.getElementById('score');
+        b.style.visibility = 'visible';
+        b.style.opacity = '1';
+        b.style.transition = 'all 0.7s ease-out 0s';
+        topScores();
+    }
+    function closeScores(){
+        var b = document.getElementById('score');
+        b.style.visibility = 'hidden';
+        b.style.opacity = '0';
+        scoresTable.destroy();
+    }
+    function openComments(){
+        var a = document.getElementById('comment');
+        a.style.visibility = 'visible';
+        a.style.opacity = '1';
+        a.style.transition = 'all 0.7s ease-out 0s';
+        comments();
+    }
+    function closeComments(){
+        var a = document.getElementById('comment');
+        a.style.visibility = 'hidden';
+        a.style.opacity = '0';
+        commentsTable.destroy();
+    }
+    function topScores() {
+        scoresTable = $('#clientSideScoreTable').DataTable({
+            columns: [
+                {data: "player"},
+                {data: "points"},
+                {data: "playedOn"}
+            ],
+            dom: 't',
+            retrieve: true,
+            ajax: {url: "/api/score/lightsOff", dataSrc: ''}
+        });
+        scoresTable.order([1, 'desc']).draw();
+        setTimeout(function (){
+            dateFormat('#clientSideScoreTable tr');
+        }, 300);
+    }
+    function comments() {
+        commentsTable = $('#clientSideCommentsTable').DataTable({
+            columns: [
+                {data: "player"},
+                {data: "comment"},
+                {data: "commentedOn"}
+            ],
+            dom: 't',
+            retrieve: true,
+            ajax: {url: "/api/comment/lightsOff", dataSrc: ''}
+        });
+        setTimeout(function (){
+            dateFormat('#clientSideCommentsTable tr');
+        }, 300);
+    }
+    function dateFormat(name){
+        $(name).each(function (){
+            var tmp = $(this).find("td").eq(2).html();
+            if(tmp == null) return;
+
+            var date = new Date(tmp);
+
+            var hour = date.getHours();
+            var minutes = date.getMinutes();
+            if(minutes < 10){
+                minutes = '0' + minutes;
+            }
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+
+            $(this).find("td").eq(2).text(hour + ':' + minutes + ' ' + day + '/' + month + '/' + year);
+        })
+    }
+</script>
+
+</body>
+</html>

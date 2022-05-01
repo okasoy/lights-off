@@ -11,6 +11,7 @@ public class Field {
     private TypeOfLevel typeOfLevel;
     private int level = 0;
     private int moveCount = 0;
+    private int score = 0;
 
     public Field(int rowCount, int columnCount){
         this.rowCount = rowCount;
@@ -91,11 +92,15 @@ public class Field {
         return this.tiles[row][column];
     }
 
+    public int getMoveCount(){
+        return this.moveCount;
+    }
+
     public int getScore(){
-        if(this.isSolved() && moveCount > 0 && moveCount < 10) moveCount = (30/moveCount + 20) * 3;
-        else if(this.isSolved() && moveCount >= 10 && moveCount < 20) moveCount = (30/moveCount + 20) * 2;
-        else if(moveCount != 0) moveCount += 20;
-        return moveCount;
+        if (moveCount != 0) score += moveCount + 20;
+        if(this.isSolved() && moveCount > 0 && moveCount < 10) score += 100;
+        else if(this.isSolved() && moveCount >= 10 && moveCount < 20) score += 50;
+        return score;
     }
 
     public boolean isSolved(){

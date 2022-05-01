@@ -20,7 +20,7 @@ public class CommentServiceRestClient implements CommentService{
 
     @Override
     public List<Comment> getComments(String game) throws CommentException {
-        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Comment.class).getBody());
+        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Comment[].class).getBody());
     }
 
     @Override

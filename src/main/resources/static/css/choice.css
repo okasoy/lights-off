@@ -1,0 +1,33 @@
+body {
+    background-image: url("../images/choicebackground.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.panel1 {
+    margin-top: 8vh;
+    margin-left: 4.5vw;
+    text-align: center;
+    float: left;
+    min-width: 39vw;
+    width: 39vw;
+    min-height: 59vh;
+    height: 59vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel2 {
+    margin-top: 8vh;
+    margin-right: 4.5vw;
+    float: right;
+    text-align: center;
+    min-width: 39vw;
+    width: 39vw;
+    min-height: 59vh;
+    height: 59vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -150,6 +150,8 @@ public class ConsoleUI {
         addComment();
         addRating();
         showTopScores();
+        showAverageRating();
+        showComments();
     }
 
     private void showTopScores() {
@@ -162,6 +164,31 @@ public class ConsoleUI {
             for (int i = 0; i < scores.size(); i++) {
                 var score = scores.get(i);
                 System.out.printf("%d. %s %d\n", i + 1, score.getPlayer(), score.getPoints());
+            }
+            System.out.println("---------------------------------------------------------------");
+        }
+    }
+
+    private void showAverageRating() {
+        System.out.println("Do you want to see average rating? Y/N");
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("Average rating: " + ratingService.getAverageRating("lightsOff"));
+            System.out.println("---------------------------------------------------------------");
+        }
+    }
+
+    private void showComments() {
+        System.out.println("Do you want to see comments? Y/N");
+        while(processInputYesOrNo()) System.out.println("Please enter Y or N!");
+        if (yesOrNo.equals("Y")) {
+            var comments = commentService.getComments("lightsOff");
+            System.out.println("Comments");
+            System.out.println("---------------------------------------------------------------");
+            for (int i = 0; i < comments.size(); i++) {
+                var comment = comments.get(i);
+                System.out.printf("%d. %s \t %s\n", i + 1, comment.getPlayer(), comment.getComment());
             }
             System.out.println("---------------------------------------------------------------");
         }

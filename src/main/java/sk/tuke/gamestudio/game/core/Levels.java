@@ -12,16 +12,16 @@ public class Levels {
 
     private String getPathname(int level){
         switch(level){
-            case 1: return "./src/main/resources/level1.txt";
-            case 2: return "./src/main/resources/level2.txt";
-            case 3: return "./src/main/resources/level3.txt";
-            case 4: return "./src/main/resources/level4.txt";
-            case 5: return "./src/main/resources/level5.txt";
-            case 6: return "./src/main/resources/level6.txt";
-            case 7: return "./src/main/resources/level7.txt";
-            case 8: return "./src/main/resources/level8.txt";
-            case 9: return "./src/main/resources/level9.txt";
-            case 10: return "./src/main/resources/level10.txt";
+            case 1: return "./src/main/resources/levels/level1.txt";
+            case 2: return "./src/main/resources/levels/level2.txt";
+            case 3: return "./src/main/resources/levels/level3.txt";
+            case 4: return "./src/main/resources/levels/level4.txt";
+            case 5: return "./src/main/resources/levels/level5.txt";
+            case 6: return "./src/main/resources/levels/level6.txt";
+            case 7: return "./src/main/resources/levels/level7.txt";
+            case 8: return "./src/main/resources/levels/level8.txt";
+            case 9: return "./src/main/resources/levels/level9.txt";
+            case 10: return "./src/main/resources/levels/level10.txt";
             default: return null;
         }
     }
