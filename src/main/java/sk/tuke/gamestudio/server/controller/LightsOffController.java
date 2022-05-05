@@ -73,6 +73,7 @@ public class LightsOffController {
 
     @RequestMapping("/lightsOff/new")
     public String newGame(){
+        previousScore = score;
         if(field.getTypeOfLevel() == TypeOfLevel.PREPARED) {
             field = new Field(5, 5, level);
             field.setTypeOfLevel(TypeOfLevel.PREPARED);
@@ -102,7 +103,7 @@ public class LightsOffController {
     @RequestMapping(value = "/lightsOff/name", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String getName(){
-        if (name == null) return "Username: Noname";
+        if (name == null) return "Username: Guest";
         return "Username: " + name;
     }
 
