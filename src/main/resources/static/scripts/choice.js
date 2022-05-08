@@ -3,11 +3,6 @@ var username;
 var isLogged;
 
 $(document).ready(function () {
-    refreshField("/lightsOff/field");
-    getName();
-    getScore();
-    getLevel();
-    getMove();
     getUsername().then(() => {
         if (isLogged === "false" || isLogged === "") {
             $('#logout').hide();
@@ -112,54 +107,4 @@ function closeSignUp(){
     var a = document.getElementById('SignUp');
     a.style.visibility = 'hidden';
     a.style.opacity = '0';
-}
-
-function refreshField(url) {
-    $.ajax({
-        url: url,
-    }).done(function (html) {
-        $("#fieldFromService").html(html);
-        $("#fieldFromService a").each(function () {
-            const url = $(this).attr("href").replace("/lightsOff", "/lightsOff/field");
-            $(this).removeAttr("href");
-            $(this).click(function () {
-                getName();
-                getScore();
-                getLevel();
-                getMove();
-                refreshField(url);
-                getName();
-                getScore();
-                getLevel();
-                getMove();
-            });
-        })
-    });
-}
-
-function getName() {
-    $.get('/lightsOff/name', function (response) {
-        document.getElementById("name").textContent = response;
-        if(response === "" || response == null){
-            document.getElementById("name").textContent = "Guest";
-        }
-    });
-}
-
-function getScore() {
-    $.get('/lightsOff/score', function (response) {
-        document.getElementById("score").textContent = response;
-    });
-}
-
-function getLevel() {
-    $.get('/lightsOff/level', function (response) {
-        document.getElementById("level").textContent = response;
-    });
-}
-
-function getMove() {
-    $.get('/lightsOff/move', function (response) {
-        document.getElementById("move").textContent = response;
-    });
 }

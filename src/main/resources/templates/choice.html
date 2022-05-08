@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Gamestudio</title>
     <link rel="stylesheet" href="/css/choice.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/scripts/choice.js"></script>
     <style>
         .button {
             display: inline-block;
@@ -47,6 +49,57 @@
     </style>
 </head>
 <body>
+
+<input type="hidden" name="isLogged" id="is" value="">
+
+<div class="login">
+    <div class="ribbon">
+        <form>
+            <button class="logIn" id="loginButton" onclick="openLogIn()" type="button">Log in</button>
+            <div class="logout" id="logout">
+            </div>
+        </form>
+        <div id="SignUp">
+            <div class="popup">
+                <button class="close" title="close" onclick="closeSignUp()"></button>
+                <p class="zag">Log in or Sign up</p>
+                <p style="color: black; font-size: 20px; font-weight:bold">Sign up</p>
+                <div class="container">
+                    <label for="username" style="color: black"><b>Username</b></label>
+                    <input type="text" id="username" name="username" placeholder="Enter Username" required>
+
+                    <label for="password" style="color: black"><b>Password</b></label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="singUp()" class="submit">Sign up</button>
+                    <button type="button" onclick="openLogIn()" class="submit" style="float: right">Login</button>
+                </div>
+            </div>
+        </div>
+        <div id="logIn">
+            <div class="popup">
+                <button class="close" title="close" onclick="closeLogIn()"></button>
+                <p class="zag">Log in or Sign up</p>
+                <p style="color: black; font-size: 20px; font-weight:bold">Log in</p>
+                <div class="container">
+                    <label for="uname" style="color: black"><b>Username</b></label>
+                    <input type="text" id="uname" name="uname" placeholder="Enter Username" required>
+
+                    <label for="psw" style="color: black"><b>Password</b></label>
+                    <input type="password" id="psw" name="psw" placeholder="Enter Password" required>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="logIn()" class="submit">Login</button>
+                    <button type="button" onclick="openSignUp()" class="submit" style="float: right">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="panel1">
     <form action="/lightsOff/prepared">

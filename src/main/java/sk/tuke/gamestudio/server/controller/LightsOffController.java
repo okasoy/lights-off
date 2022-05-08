@@ -3,9 +3,7 @@ package sk.tuke.gamestudio.server.controller;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.game.core.Field;
 import sk.tuke.gamestudio.game.core.TileState;
@@ -100,11 +98,17 @@ public class LightsOffController {
         return "Level: " + level;
     }
 
+    @RequestMapping(value = "/lightsOff/setName")
+    public void setName(@RequestParam String username){
+        if(username == null) return;
+        if(username.equals("")) this.name = null;
+        else name = username;
+    }
+
     @RequestMapping(value = "/lightsOff/name", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String getName(){
-        if (name == null) return "Username: Guest";
-        return "Username: " + name;
+        return this.name;
     }
 
     @RequestMapping(value = "/lightsOff/score", produces = MediaType.TEXT_HTML_VALUE)
@@ -130,12 +134,12 @@ public class LightsOffController {
                 switch (tileState){
                     case ON:
                         stringBuilder.append("<a href='/lightsOff?row=" + i + "&column=" + j + "'>\n");
-                        stringBuilder.append("<img src='/images/on1.png'>\n");
+                        stringBuilder.append("<img src='/images/on.png'>\n");
                         stringBuilder.append("</a>\n");
                         break;
                     case OFF:
                         stringBuilder.append("<a href='/lightsOff?row=" + i + "&column=" + j + "'>\n");
-                        stringBuilder.append("<img src='/images/off1.png'>\n");
+                        stringBuilder.append("<img src='/images/off.png'>\n");
                         stringBuilder.append("</a>\n");
                         break;
                 }

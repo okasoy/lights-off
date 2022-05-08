@@ -19,8 +19,13 @@ public class UserServiceJPA implements UserService{
 
     @Override
     public String getPassword(String game, String login) throws UserException {
-        return (String) entityManager.createNamedQuery("Users.getUserPassword").setParameter("game", game)
-                .setParameter("player", login).getSingleResult();
+        try {
+            return (String) entityManager.createNamedQuery("Users.getUserPassword").setParameter("game", game)
+                    .setParameter("player", login).getSingleResult();
+        }
+        catch (Exception e) {
+            return "";
+        }
     }
 
     @Override

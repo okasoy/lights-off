@@ -13,6 +13,8 @@ import java.util.Date;
              query = "SELECT avg(r.rating) FROM Rating r WHERE r.game=:game")
 @NamedQuery( name = "Rating.getRating",
              query = "SELECT r.rating FROM Rating r WHERE r.game=:game AND r.player=:player")
+@NamedQuery( name = "Rating.getRatings",
+        query = "SELECT r FROM Rating r WHERE r.game=:game")
 @NamedQuery( name = "Rating.resetRating",
              query = "DELETE FROM Rating")
 public class Rating implements Serializable {

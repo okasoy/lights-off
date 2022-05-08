@@ -5,13 +5,60 @@
     <title>Gamestudio</title>
     <link rel="stylesheet" href="/css/homePage.css"/>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/scripts/homePage.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 </head>
 <body>
 
-<div class="login">
+<input type="hidden" name="isLogged" id="is" value="">
 
+<div class="login">
+    <div class="ribbon">
+        <form>
+            <button class="logIn" id="loginButton" onclick="openLogIn()" type="button">Log in</button>
+            <div class="logout" id="logout">
+            </div>
+        </form>
+        <div id="SignUp">
+            <div class="popup">
+                <button class="close" title="close" onclick="closeSignUp()"></button>
+                <p class="zag">Log in or Sign up</p>
+                <p style="color: black; font-size: 20px; font-weight:bold">Sign up</p>
+                <div class="container">
+                    <label for="name" style="color: black"><b>Username</b></label>
+                    <input type="text" id="name" name="name" placeholder="Enter Username" required>
+
+                    <label for="password" style="color: black"><b>Password</b></label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="singUp()" class="submit">Sign up</button>
+                    <button type="button" onclick="openLogIn()" class="submit" style="float: right">Login</button>
+                </div>
+            </div>
+        </div>
+        <div id="logIn">
+            <div class="popup">
+                <button class="close" title="close" onclick="closeLogIn()"></button>
+                <p class="zag">Log in or Sign up</p>
+                <p style="color: black; font-size: 20px; font-weight:bold">Log in</p>
+                <div class="container">
+                    <label for="uname" style="color: black"><b>Username</b></label>
+                    <input type="text" id="uname" name="uname" placeholder="Enter Username" required>
+
+                    <label for="psw" style="color: black"><b>Password</b></label>
+                    <input type="password" id="psw" name="psw" placeholder="Enter Password" required>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="logIn()" class="submit">Login</button>
+                    <button type="button" onclick="openSignUp()" class="submit" style="float: right">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="buttons">
@@ -83,69 +130,6 @@
                     <div class="popup">
                         <button class="close" title="close" onclick="closeRating()"></button>
                         <p class="zag">Lights Off - Top Scores</p>
-                        <div class="star-rating__container">
-                            <div class="star-rating__wrapper">
-                                <div class="star-rating__avg"></div>
-                                <div class="star-rating" data-id="page-1">
-                                    <div class="star-rating__bg">
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <div class="star-rating__live">
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-rating="1">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-rating="2">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-rating="3">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-rating="4">
-                                            <path fill="currentColor"
-
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                        <svg class="star-rating__item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-rating="5">
-                                            <path fill="currentColor"
-                                                  d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="star-rating__votes"></div>
-                            </div>
-                        </div>
                         <table id="clientSideRatingTable" class="display">
                             <thead>
                             <tr>
@@ -174,7 +158,9 @@
                             <label class="label" for="commentInput">Your comment:</label>
                             <input type="text" id="commentInput" name="commentInput" placeholder="Enter your comment">
                         </form>
-                        <button class="submit" title="submit" onclick="addComment()">Submit</button>
+                        <div class="clearfix">
+                            <button type="submit" class="submit" title="submit" onclick="addComment()">Submit</button>
+                        </div>
                         <table id="clientSideCommentsTable" class="display">
                             <thead>
                             <tr>
@@ -192,258 +178,6 @@
         </tr>
     </table>
 </div>
-
-<script>
-    var scoresTable;
-    var ratingTable;
-    var commentsTable;
-    var game = "lightsOff";
-    function openRules(){
-        var a = document.getElementById('rules');
-        a.style.visibility = 'visible';
-        a.style.opacity = '1';
-        a.style.transition = 'all 0.7s ease-out 0s';
-    }
-    function closeRules(){
-        var a = document.getElementById('rules');
-        a.style.visibility = 'hidden';
-        a.style.opacity = '0';
-    }
-    function openScores(){
-        var b = document.getElementById('score');
-        b.style.visibility = 'visible';
-        b.style.opacity = '1';
-        b.style.transition = 'all 0.7s ease-out 0s';
-        topScores();
-    }
-    function closeScores(){
-        var b = document.getElementById('score');
-        b.style.visibility = 'hidden';
-        b.style.opacity = '0';
-        scoresTable.destroy();
-    }
-    function openComments(){
-        var a = document.getElementById('comment');
-        a.style.visibility = 'visible';
-        a.style.opacity = '1';
-        a.style.transition = 'all 0.7s ease-out 0s';
-        comments();
-    }
-    function closeComments(){
-        var a = document.getElementById('comment');
-        a.style.visibility = 'hidden';
-        a.style.opacity = '0';
-        commentsTable.destroy();
-    }
-    function openRating(){
-        var a = document.getElementById('rating');
-        a.style.visibility = 'visible';
-        a.style.opacity = '1';
-        a.style.transition = 'all 0.7s ease-out 0s';
-        rating();
-    }
-    function closeRating(){
-        var a = document.getElementById('rating');
-        a.style.visibility = 'hidden';
-        a.style.opacity = '0';
-        ratingTable.destroy();
-    }
-    function topScores() {
-        scoresTable = $('#clientSideScoreTable').DataTable({
-            columns: [
-                {data: "№",
-                 render: function (data, type, row, meta) {
-                     return meta.row + meta.settings._iDisplayStart + 1;
-                }},
-                {data: "player"},
-                {data: "points"},
-                {data: "playedOn"}
-            ],
-            dom: 't',
-            retrieve: true,
-            ajax: {url: "/api/score/lightsOff", dataSrc: ''}
-        });
-        scoresTable.order([2, 'desc']).draw();
-        setTimeout(function (){
-            dateFormat('#clientSideScoreTable tr', 3);
-        }, 400);
-    }
-    function comments() {
-        commentsTable = $('#clientSideCommentsTable').DataTable({
-            columns: [
-                {data: "player"},
-                {data: "comment"},
-                {data: "commentedOn"}
-            ],
-            dom: 't',
-            retrieve: true,
-            ajax: {url: "/api/comment/lightsOff", dataSrc: ''}
-        });
-        commentsTable.order([2, 'desc']).draw();
-        setTimeout(function (){
-            dateFormat('#clientSideCommentsTable tr', 2);
-        }, 300);
-    }
-    function addComment() {
-        if(document.getElementById("commentInput").value == "") {
-            document.getElementById("commentInput").style.borderColor = "red";
-            return;
-        } else document.getElementById("commentInput").style.border = "3px solid #ccc";
-        var comment = new Object();
-        comment.player = ;//TODO document.getElementById("nameInput").value;
-        comment.game = game;
-        comment.comment = document.getElementById("commentInput").value;
-        comment.commentedOn = new Date();
-        $.ajax({
-            url: '/api/comment',
-            type: 'POST',
-            data: JSON.stringify(comment),
-            contentType: "application/json"
-        });
-        setTimeout(function (){
-            commentsTable.destroy();
-            comments();
-        }, 400);
-    }
-    function rating(){
-        ratingTable = $('#clientSideRatingTable').DataTable({
-            columns: [
-                {data: "player"},
-                {data: "rating"},
-                {data: "ratedOn"}
-            ],
-            dom: 't',
-            retrieve: true,
-            ajax: {url: "/api/rating/lightsOff", dataSrc: ''}
-        });
-        ratingTable.order([2, 'desc']).draw();
-        setTimeout(function (){
-            dateFormat('#clientSideRatingTable tr', 2);
-        }, 300);
-        $(function() {
-            var
-                processURL = '/api/rating/lightsOff',
-                maxStars = 5,
-                output = [],
-                ratingStarClass = '.star-rating_active .star-rating__item';
-            if (localStorage.getItem('star_rating')) {
-                output = JSON.parse(localStorage.getItem('star_rating'));
-            }
-            $('.star-rating').each(function () {
-                var
-                    _this = this,
-                    ratingId = $(_this).attr('data-id');
-                $.post(processURL, { 'action': 'get_rating', 'id': ratingId })
-                    .done(function (data) {
-                        if (data['result'] === 'success') {
-                            var
-                                ratingAvg = parseFloat(data['data']['rating_avg']),
-                                totalVotes = data['data']['total_votes'];
-                            $(_this).find('.star-rating__live').css('width', ratingAvg.toFixed(1) / maxStars * 100 + '%');
-                            $(_this).closest('.star-rating__wrapper').find('.star-rating__avg').text(ratingAvg.toFixed(1));
-                            $(_this).closest('.star-rating__wrapper').find('.star-rating__votes').text('оценок: ' + totalVotes);
-                            if (data['data']['is_vote'] !== undefined) {
-                                if (data['data']['is_vote'] === false) {
-                                    if (output.indexOf(ratingId) < 0) {
-                                        $(_this).addClass('star-rating_active');
-                                    }
-                                }
-                            } else {
-                                if (output.indexOf(ratingId) < 0) {
-                                    $(_this).addClass('star-rating_active');
-                                }
-                            }
-                        }
-                    });
-            });
-
-            var starRatingItems = $('.star-rating__live .star-rating__item');
-            starRatingItems.on('mouseover', function () {
-                var
-                    rating = $(this).attr('data-rating'),
-                    items = $(this).closest('.star-rating__live').find('.star-rating__item');
-                if (!$(this).closest('.star-rating').hasClass('star-rating_active')) {
-                    return;
-                }
-                items.each(function (index, element) {
-                    if (index < rating) {
-                        if (!$(element).hasClass('star-rating__item_active')) {
-                            $(element).addClass('star-rating__item_active');
-                        } else {
-                            if ($(element).hasClass('star-rating__item_active')) {
-                                $(element).removeClass('star-rating__item_active');
-                            }
-                        }
-                    }
-                })
-            });
-
-            starRatingItems.on('mouseout', function () {
-                if (!$(this).closest('.star-rating').hasClass('star-rating_active')) {
-                    return;
-                }
-                $(this).closest('.star-rating__live').find('.star-rating__item').removeClass('star-rating__item_active');
-            });
-
-            $(document).on('click', ratingStarClass, function (e) {
-                e.preventDefault();
-                var
-                    _this = this,
-                    ratingId = $(_this).closest('.star-rating').attr('data-id'),
-                    rating = $(_this).attr('data-rating');
-                $.post(processURL, { 'action': 'set_rating', 'id': ratingId, 'rating': rating })
-                    .done(function (data) {
-                        if (!$.isEmptyObject(data)) {
-                            if (data['result'] === 'success') {
-                                var
-                                    ratingAvg = parseFloat(data['data']['rating_avg']),
-                                    totalVotes = data['data']['total_votes'],
-                                    output = [];
-                                $(_this).closest('.star-rating').removeClass('star-rating_active')
-                                    .find('.star-rating__item_active').removeClass('star-rating__item_active')
-                                    .end().find('.star-rating__live').css('width', ratingAvg.toFixed(1) / maxStars * 100 + '%');
-                                $(_this).closest('.star-rating__wrapper')
-                                    .find('.star-rating__avg').text(ratingAvg.toFixed(1))
-                                    .end().find('.star-rating__votes').text('оценок: ' + totalVotes);
-                                if (localStorage.getItem('star_rating')) {
-                                    output = JSON.parse(localStorage.getItem('star_rating'));
-                                }
-                                if (output.indexOf(ratingId) < 0) {
-                                    output.push(ratingId);
-                                }
-                                localStorage.setItem('star_rating', JSON.stringify(output));
-                            }
-                        }
-                    });
-            });
-        });
-    }
-    function dateFormat(name, i){
-        $(name).each(function (){
-            var tmp = $(this).find("td").eq(i).html();
-            if(tmp == null) return;
-
-            var date = new Date(tmp);
-
-            var hour = date.getHours();
-            var minutes = date.getMinutes();
-            if(minutes < 10){
-                minutes = '0' + minutes;
-            }
-            var day = date.getDate();
-            if(day < 10){
-                day = '0' + day;
-            }
-            var month = date.getMonth() + 1;
-            if(month < 10){
-                month = '0' + month;
-            }
-            var year = date.getFullYear();
-
-            $(this).find("td").eq(i).text(day + '.' + month + '.' + year + ' ' + hour + ':' + minutes);
-        })
-    }
-</script>
 
 </body>
 </html>
