@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td>
-                <form action="/lightsOffChoice">
+                <form action="/lightsOff/load">
                     <button class="button">Load</button>
                 </form>
             </td>
@@ -129,7 +129,20 @@
                 <div id="rating">
                     <div class="popup">
                         <button class="close" title="close" onclick="closeRating()"></button>
-                        <p class="zag">Lights Off - Top Scores</p>
+                        <p class="zag">Lights Off - Rating</p>
+                        <div class="rating-area" id="rating-area">
+                            <input type="radio" onclick="addRating(5)" id="star-5" name="rating" value="5">
+                            <label for="star-5" title="5 stars"></label>
+                            <input type="radio" onclick="addRating(4)" id="star-4" name="rating" value="4">
+                            <label for="star-4" title="4 stars"></label>
+                            <input type="radio" onclick="addRating(3)" id="star-3" name="rating" value="3">
+                            <label for="star-3" title="3 stars"></label>
+                            <input type="radio" onclick="addRating(2)" id="star-2" name="rating" value="2">
+                            <label for="star-2" title="2 stars"></label>
+                            <input type="radio" onclick="addRating(1)" id="star-1" name="rating" value="1">
+                            <label for="star-1" title="1 star"></label>
+                        </div>
+                        <p style="float: right;font-weight: bold;margin-right: 20px">Avg rating: <span id="avgRating"></span></p>
                         <table id="clientSideRatingTable" class="display">
                             <thead>
                             <tr>

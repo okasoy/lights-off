@@ -54,7 +54,12 @@ function showLogout() {
 async function singUp() {
     var name = document.getElementById('username').value;
     var password = document.getElementById('password').value;
-    if (name == null || password == null) return;
+    if (name === "" || password === "") return;
+    var response = await $.get('/api/user/' + game + '/' + name);
+    if(response !== ""){
+        alert("This name is already taken!");
+        return;
+    }
     var user = new Object();
     user.login = name;
     user.game = game;

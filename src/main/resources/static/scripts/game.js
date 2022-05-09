@@ -1,6 +1,8 @@
 var game = "lightsOff";
 var username;
 var isLogged;
+var level;
+var typeOfLevel;
 
 $(document).ready(function () {
     refreshField("/lightsOff/field");
@@ -8,6 +10,12 @@ $(document).ready(function () {
     getScore();
     getLevel();
     getMove();
+    getTypeOfLevel().then(() => {
+        getSaveButton();
+    });
+    $.get('/lightsOff/isSolved', function (response) {
+        if(response === "true" && level === "10") openWin();
+    });
     getUsername().then(() => {
         if (isLogged === "false" || isLogged === "") {
             $('#logout').hide();
@@ -59,7 +67,12 @@ function showLogout() {
 async function singUp() {
     var name = document.getElementById('username').value;
     var password = document.getElementById('password').value;
-    if (name == null || password == null) return;
+    if (name === "" || password === "") return;
+    var response = await $.get('/api/user/' + game + '/' + name);
+    if(response !== ""){
+        alert("This name is already taken!");
+        return;
+    }
     var user = new Object();
     user.login = name;
     user.game = game;
@@ -127,6 +140,10 @@ function refreshField(url) {
                 getScore();
                 getLevel();
                 getMove();
+                isSolved();
+                $.get('/lightsOff/isSolved', function (response) {
+                    if(response === "true" && level === "10") openWin();
+                });
                 refreshField(url);
                 getName();
                 getScore();
@@ -135,6 +152,37 @@ function refreshField(url) {
             });
         })
     });
+}
+
+function isSolved() {
+    $.get('/lightsOff/isSolved', function (response) {
+        if(response === "true"){
+            if (username === "") return;
+            var score = new Object();
+            score.player = username;
+            score.game = game;
+            score.points = document.getElementById("score").textContent;
+            score.playedOn = new Date();
+            $.ajax({
+                url: '/api/score',
+                type: 'POST',
+                data: JSON.stringify(score),
+                contentType: "application/json"
+            });
+        }
+    });
+}
+
+function openWin(){
+    var a = document.getElementById('win');
+    a.style.visibility = 'visible';
+    a.style.opacity = '1';
+    a.style.transition = 'all 0.7s ease-out 0s';
+}
+function closeWin(){
+    var a = document.getElementById('win');
+    a.style.visibility = 'hidden';
+    a.style.opacity = '0';
 }
 
 function getName() {
@@ -153,8 +201,24 @@ function getScore() {
 }
 
 function getLevel() {
-    $.get('/lightsOff/level', function (response) {
-        document.getElementById("level").textContent = response;
+    if(typeOfLevel === "prepared") {
+        $('#level').empty().append("<h1>Level: <span id=\"levelId\"></span></h1>");
+        $.get('/lightsOff/level', function (response) {
+            document.getElementById("levelId").textContent = response;
+            level = response;
+        });
+    }
+}
+
+function getSaveButton() {
+    if(typeOfLevel === "prepared") {
+        $('#saveButton').append("<form>\n<button class=\"button\">Save</button>\n</form>>");
+    }
+}
+
+async function getTypeOfLevel() {
+    await $.get('/lightsOff/typeOfLevel', function (response) {
+        typeOfLevel = response;
     });
 }
 

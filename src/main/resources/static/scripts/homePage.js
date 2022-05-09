@@ -56,7 +56,12 @@ function showLogout() {
 async function singUp() {
     var name = document.getElementById('name').value;
     var password = document.getElementById('password').value;
-    if (name == null || password == null) return;
+    if (name === "" || password === "") return;
+    var response = await $.get('/api/user/' + game + '/' + name);
+    if(response !== ""){
+        alert("This name is already taken!");
+        return;
+    }
     var user = new Object();
     user.login = name;
     user.game = game;
@@ -155,7 +160,9 @@ function openRating(){
     a.style.visibility = 'visible';
     a.style.opacity = '1';
     a.style.transition = 'all 0.7s ease-out 0s';
-    rating();
+    getAvgRating();
+    checkRating();
+    ratings();
 }
 function closeRating(){
     var a = document.getElementById('rating');
@@ -194,6 +201,7 @@ function comments() {
         ],
         dom: 't',
         retrieve: true,
+        iDisplayLength: 50,
         ajax: {url: "/api/comment/lightsOff", dataSrc: ''}
     });
     commentsTable.order([2, 'desc']).draw();
@@ -203,7 +211,7 @@ function comments() {
 }
 
 function addComment() {
-    if (username == null) return;
+    if (username === "") return;
     if (document.getElementById("commentInput").value == "") {
         document.getElementById("commentInput").style.borderColor = "red";
         return;
@@ -225,7 +233,7 @@ function addComment() {
     }, 400);
 }
 
-function rating(){
+function ratings(){
     ratingTable = $('#clientSideRatingTable').DataTable({
         columns: [
             {data: "player"},
@@ -240,6 +248,65 @@ function rating(){
     setTimeout(function (){
         dateFormat('#clientSideRatingTable tr', 2);
     }, 300);
+}
+
+function getAvgRating() {
+    $.get('/api/rating/average/lightsOff', function (response) {
+        document.getElementById("avgRating").textContent = response;
+    });
+}
+
+async function checkRating() {
+    if(username === "") {
+        $('#rating-area').empty();
+        for(var i = 0; i < 5; i++){
+            $("#rating-area").append("<img src='/images/notrated.png'>");
+        }
+    }
+    else {
+        var rate = await $.get('/api/rating/' + game + '/' + username);
+        if (rate !== 0) {
+            $('#rating-area').empty();
+            for(var i = 0; i < parseInt(rate); i++){
+                $("#rating-area").append("<img src='/images/rated.png'>");
+            }
+            for(var i = 0; i < 5 - parseInt(rate); i++){
+                $("#rating-area").append("<img src='/images/notrated.png'>");
+            }
+        } else {
+            $('#rating-area').empty().append("<input type=\"radio\" onclick=\"addRating(5)\" id=\"star-5\" name=\"rating\" value=\"5\">\n" +
+                                             "<label for=\"star-5\" title=\"5 stars\"></label>\n" +
+                                             "<input type=\"radio\" onclick=\"addRating(4)\" id=\"star-4\" name=\"rating\" value=\"4\">\n" +
+                                             "<label for=\"star-4\" title=\"4 stars\"></label>\n" +
+                                             "<input type=\"radio\" onclick=\"addRating(3)\" id=\"star-3\" name=\"rating\" value=\"3\">\n" +
+                                             "<label for=\"star-3\" title=\"3 stars\"></label>\n" +
+                                             "<input type=\"radio\" onclick=\"addRating(2)\" id=\"star-2\" name=\"rating\" value=\"2\">\n" +
+                                             "<label for=\"star-2\" title=\"2 stars\"></label>\n" +
+                                             "<input type=\"radio\" onclick=\"addRating(1)\" id=\"star-1\" name=\"rating\" value=\"1\">\n" +
+                                             "<label for=\"star-1\" title=\"1 star\"></label>");
+        }
+    }
+}
+
+function addRating(i) {
+    if (username === "") return;
+    var rating = new Object();
+    rating.player = username;
+    rating.game = game;
+    rating.rating = i.toString();
+    rating.ratedOn = new Date();
+    $.ajax({
+        url: '/api/rating',
+        type: 'POST',
+        data: JSON.stringify(rating),
+        contentType: "application/json"
+    });
+    setTimeout(function (){
+        ratingTable.destroy();
+        getAvgRating();
+        checkRating();
+        ratings();
+    }, 400);
 }
 
 function dateFormat(name, i){
