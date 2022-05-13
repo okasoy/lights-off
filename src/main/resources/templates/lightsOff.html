@@ -34,7 +34,7 @@
 
 <div class="login">
     <div class="ribbon">
-        <form action="/lightsOffChoice">
+        <form action="/lightsOff/Choice">
             <button class="logIn" style="float: left;margin-left: 5px">Back</button>
         </form>
         <form>
@@ -122,16 +122,18 @@
         </tr>
         <tr>
             <td>
-                <h2 th:utext="${@lightsOffController.getMoveCount()}" id="move"></h2>
+                <h2>Moves: <span id="move"></span></h2>
             </td>
         </tr>
     </table>
 </div>
 
-<div class="buttonPanel" id="saveButton">
+<div class="buttonPanel">
     <form action="/lightsOff/new">
         <button class="button">New game</button>
     </form>
+    <div id="saveButton">
+    </div>
 </div>
 
 </body>

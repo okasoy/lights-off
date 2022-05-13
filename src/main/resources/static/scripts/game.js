@@ -8,10 +8,10 @@ $(document).ready(function () {
     refreshField("/lightsOff/field");
     getName();
     getScore();
-    getLevel();
     getMove();
     getTypeOfLevel().then(() => {
         getSaveButton();
+        getLevel();
     });
     $.get('/lightsOff/isSolved', function (response) {
         if(response === "true" && level === "10") openWin();
@@ -47,7 +47,7 @@ async function logIn() {
     var password = document.getElementById('psw').value;
     var state = await $.get('/api/user/' + game + '/' + name);
     if (password != state) {
-        alert("Invalid password!");
+        alert("Invalid username or password!");
         return;
     }
     username = name;
@@ -57,7 +57,9 @@ async function logIn() {
     showLogout();
     $('#logout').show();
     closeLogIn();
-    getName();
+    setTimeout(function () {
+        getName();
+    }, 200);
 }
 
 function showLogout() {
@@ -92,7 +94,9 @@ function logout() {
     document.getElementById('is').value = "false";
     $('#logout').hide();
     $("#loginButton").show();
-    getName();
+    setTimeout(function () {
+        getName();
+    }, 200);
 }
 
 function setName() {
@@ -136,19 +140,19 @@ function refreshField(url) {
             const url = $(this).attr("href").replace("/lightsOff", "/lightsOff/field");
             $(this).removeAttr("href");
             $(this).click(function () {
-                getName();
-                getScore();
-                getLevel();
-                getMove();
-                isSolved();
+                setTimeout(function () {
+                    getName();
+                    getScore();
+                    getLevel();
+                    getMove();
+                }, 200);
+                refreshField(url);
+                setTimeout(function (){
+                    isSolved();
+                }, 200);
                 $.get('/lightsOff/isSolved', function (response) {
                     if(response === "true" && level === "10") openWin();
                 });
-                refreshField(url);
-                getName();
-                getScore();
-                getLevel();
-                getMove();
             });
         })
     });
@@ -212,8 +216,16 @@ function getLevel() {
 
 function getSaveButton() {
     if(typeOfLevel === "prepared") {
-        $('#saveButton').append("<form>\n<button class=\"button\">Save</button>\n</form>>");
+        $('#saveButton').append("<button class=\"button\" onclick='saveGame()'>Save</button>\n");
     }
+}
+
+function saveGame() {
+    if (username === "") {
+        alert("If you want to save your game you must to log in!");
+        return;
+    }
+    $.get('/lightsOff/save');
 }
 
 async function getTypeOfLevel() {

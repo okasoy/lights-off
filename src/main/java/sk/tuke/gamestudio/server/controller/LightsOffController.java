@@ -1,17 +1,16 @@
 package sk.tuke.gamestudio.server.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.SavedGame;
 import sk.tuke.gamestudio.game.core.Field;
 import sk.tuke.gamestudio.game.core.TileState;
 import sk.tuke.gamestudio.game.core.TypeOfLevel;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import sk.tuke.gamestudio.service.SavedGameService;
 
 @Controller
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -23,7 +22,8 @@ public class LightsOffController {
     private boolean isSolved = false;
     private boolean isLoaded = false;
     private String name = null;
-    private File scores = new File("./src/main/resources/saved/scores.txt");
+    @Autowired
+    SavedGameService savedGame;
 
     @RequestMapping("/lightsOff")
     public String lightsOff(@RequestParam(required = false) Integer row,
@@ -52,12 +52,12 @@ public class LightsOffController {
         }
     }
 
-    @RequestMapping("/lightsOffChoice")
+    @RequestMapping("/lightsOff/Choice")
     public String choice(){
         return "choice";
     }
 
-    @RequestMapping("/lightsOffHomePage")
+    @RequestMapping("/lightsOff/HomePage")
     public String homePage(){
         return "homePage";
     }
@@ -150,50 +150,33 @@ public class LightsOffController {
     @RequestMapping(value = "/lightsOff/move", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String getMoveCount(){
-        return "Moves: " + field.getMoveCount();
+        return Integer.toString(field.getMoveCount());
     }
 
-    @RequestMapping("/lightsOff/load")
+    @RequestMapping(value = "/lightsOff/load", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
     public String load(){
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(scores));
-            String str;
-            boolean isSaved = true;
-            char[] name = this.name.toCharArray();
-            while ((str=bufferedReader.readLine()) != null) {
-                char[] ch = new char[str.length()];
-                for (int i = 0; i < str.length(); i++) {
-                    ch[i] = str.charAt(i);
-                }
-                int k = 0;
-                for (int i = 0; i < name.length; i++) {
-                    if (ch[i] != name[i]) {
-                        isSaved = false;
-                        break;
-                    }
-                    else k = i;
-                }
-                k += 2;
-                if (isSaved) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(ch[k]);
-                    if (ch[k+1] != ' ') sb.append(ch[k+1]);
-                    k += 2;
-                    level = Integer.parseInt(sb.toString());
-                    sb.delete(0, sb.length());
-                    for(int i = k; i < ch.length; i++) {
-                        sb.append(ch[i]);
-                    }
-                    previousScore = Integer.parseInt(sb.toString());
-                    isLoaded = true;
-                    return prepared();
-                }
+        if(this.name != null){
+            SavedGame newGame = savedGame.getGame(this.name);
+            if(newGame != null){
+                previousScore = newGame.getScore();
+                this.level = newGame.getLevel();
+                isLoaded = true;
+                return "true";
             }
+            return "false";
         }
-        catch (Exception e) {
-            return "homePage";
+        return "false";
+    }
+
+    @RequestMapping(value = "/lightsOff/save", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String save() {
+        if(this.name != null) {
+            savedGame.addGame(new SavedGame(this.name, this.score, this.level));
+            return "true";
         }
-        return "homePage";
+        return "false";
     }
 
     public String getHtmlField(){

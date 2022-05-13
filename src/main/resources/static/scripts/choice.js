@@ -34,7 +34,7 @@ async function logIn() {
     var password = document.getElementById('psw').value;
     var state = await $.get('/api/user/' + game + '/' + name);
     if (password != state) {
-        alert("Invalid password!");
+        alert("Invalid username or password!");
         return;
     }
     username = name;

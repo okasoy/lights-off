@@ -7,7 +7,7 @@ body {
 .ribbon {
     position: fixed !important;
     width: 100% !important;
-    height: 6vh !important;
+    height: 60px !important;
     margin: 0 !important;
     padding: 0 !important;
     top: 0 !important;
@@ -23,8 +23,8 @@ body {
     border-radius: 4px;
     min-width: 110px;
     width: 110px;
-    min-height: 5vh;
-    height: 5vh;
+    min-height: 50px;
+    height: 50px;
     color: white;
     text-align: center;
     font-family: "Steamwreck";

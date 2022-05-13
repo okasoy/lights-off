@@ -32,4 +32,7 @@ public class GameStudioServer {
 
     @Bean
     public UserService userService() { return new UserServiceJPA(); }
+
+    @Bean
+    public SavedGameService savedGame(){return new SavedGameJPA();}
 }

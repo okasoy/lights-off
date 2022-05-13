@@ -14,6 +14,9 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public void setRating(Rating rating) throws RatingException {
+        if(getRating(rating.getGame(), rating.getPlayer()) != 0){
+            entityManager.createNamedQuery("Rating.deleteRatingOnUpdate").setParameter("game", rating.getGame()).setParameter("player", rating.getPlayer()).executeUpdate();
+        }
         entityManager.persist(rating);
     }
 
